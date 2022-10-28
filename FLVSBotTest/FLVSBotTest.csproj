@@ -1,0 +1,129 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisLevel>latest</AnalysisLevel>
+		<NoWarn>SA0001;SA1600;S125</NoWarn>
+		<WarningsAsErrors />
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<DebugType>pdbonly</DebugType>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="TestData\Input\Credentials.xlsx" />
+		<None Remove="TestData\Input\ElementStyles.yml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AdditionalFiles Include="stylecop.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="TestData\Input\Credentials.xlsx">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="TestData\Input\ElementStyles.yml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<SpecFlowGeneratorPlugins Include="$(_BddCoreGeneratorPluginPath)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Bdd.Core" Version="3.1.3-preview" />
+		<PackageReference Include="Bdd.Core.Web" Version="3.1.3-preview" />
+		<PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="106.0.5249.6100" />
+		<PackageReference Include="Selenium.WebDriver.GeckoDriver" Version="0.30.0.1" />
+		<PackageReference Include="Selenium.WebDriver.GeckoDriver.Win64" Version="0.30.0.1" />
+		<PackageReference Include="Selenium.WebDriver.IEDriver" Version="4.0.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
+    <PackageReference Include="NUnit.ConsoleRunner" Version="3.15.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="SpecFlow.NUnit" Version="3.9.74" />
+	</ItemGroup>
+
+	<!--<Analyzers>-->
+	<ItemGroup>
+		<PackageReference Include="SecurityCodeScan.VS2019" Version="5.6.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="8.37.0.45539">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.406">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="TestData\Before\" />
+		<Folder Include="TestData\After\" />
+		<Folder Include="TestData\Output\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="appSettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="FLVSBotTest.dev.runsettings">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="NLog.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="SpecFlow.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Spex\**" />
+		<EmbeddedResource Remove="Spex\**" />
+		<None Remove="Spex\**" />
+		<SpecFlowFeatureFiles Remove="Spex\**" />
+		<SpecFlowObsoleteCodeBehindFiles Remove="Spex\**" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<ShowTrace>true</ShowTrace>
+		<OverwriteReadOnlyFiles>true</OverwriteReadOnlyFiles>
+		<ForceGeneration>true</ForceGeneration>
+		<VerboseOutput>true</VerboseOutput>
+	</PropertyGroup>
+
+	<!--<Import Project="%userprofile%\.nuget\packages\SpecFlow\2.4.0\tools\TechTalk.SpecFlow.tasks" Condition="Exists('%userprofile%\.nuget\packages\SpecFlow\2.4.0\tools\TechTalk.SpecFlow.tasks')" />
+  <Import Project="%userprofile%\.nuget\packages\SpecFlow\2.4.0\tools\TechTalk.SpecFlow.targets" Condition="Exists('%userprofile%\.nuget\packages\SpecFlow\2.4.0\tools\TechTalk.SpecFlow.targets')" />-->
+
+	<Target Name="AfterUpdateFeatureFilesInProject">
+		<ItemGroup>
+			<Compile Include="Features\**\*.feature.cs" />
+		</ItemGroup>
+	</Target>
+
+</Project>
